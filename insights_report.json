@@ -1,0 +1,240 @@
+{
+  "timestamp": "2025-06-22T07:18:34.020589",
+  "basic_insights": {
+    "title": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)",
+    "views": 1667209460,
+    "likes": 18424892,
+    "comments": 2395839,
+    "engagement_rate": 1.25,
+    "duration": "PT3M34S",
+    "published_at": "2009-10-25T06:57:33Z"
+  },
+  "comment_insights": {
+    "total_comments": 484,
+    "sentiment_distribution": {
+      "positive": 163,
+      "negative": 58,
+      "neutral": 263
+    },
+    "category_distribution": {
+      "other": 377,
+      "spam": 18,
+      "appreciation": 10,
+      "question": 63,
+      "suggestion": 10,
+      "feedback": 5,
+      "criticism": 1
+    },
+    "sarcasm_count": 36,
+    "question_count": 63
+  },
+  "transcript_insights": {},
+  "sponsorship_insights": {},
+  "technical_insights": {
+    "original_video_analysis": {
+      "engagement_rate": 1.25,
+      "like_ratio": 1.11,
+      "comment_ratio": 0.14,
+      "total_engagement": 20820731,
+      "engagement_per_view": 0.0125
+    },
+    "similar_videos_analysis": {
+      "average_metrics": {
+        "engagement_rate": 3.12,
+        "like_ratio": 2.99,
+        "comment_ratio": 0.13
+      },
+      "top_performers": {
+        "highest_engagement": {
+          "title": "InsurAAAnce & Rick Astley Never Gonna Give You Up",
+          "engagement_rate": 4.61,
+          "channel": "CSAA Insurance Group, a AAA Insurer",
+          "views": 8309061
+        },
+        "most_likes": {
+          "title": "InsurAAAnce & Rick Astley Never Gonna Give You Up",
+          "likes": 368938,
+          "channel": "CSAA Insurance Group, a AAA Insurer",
+          "views": 8309061
+        },
+        "most_comments": {
+          "title": "InsurAAAnce & Rick Astley Never Gonna Give You Up",
+          "comments": 14328,
+          "channel": "CSAA Insurance Group, a AAA Insurer",
+          "views": 8309061
+        }
+      },
+      "content_patterns": {
+        "title_patterns": {
+          "common_keywords": {
+            "rick": 4,
+            "astley": 4,
+            "never": 4,
+            "gonna": 4,
+            "give": 4,
+            "you": 4,
+            "(lyrics)": 2,
+            "(official": 1,
+            "video)": 1,
+            "(4k": 1
+          },
+          "title_length": [
+            68,
+            49,
+            48,
+            46
+          ],
+          "has_emojis": 1,
+          "has_numbers": 1,
+          "has_brackets": 3,
+          "has_quotes": 0
+        },
+        "tag_patterns": {
+          "most_common_tags": {
+            "rick astley": 1,
+            "Never Gonna Give You Up": 1,
+            "nggyu": 1,
+            "never gonna give you up lyrics": 1,
+            "rick rolled": 1,
+            "Rick Roll": 1,
+            "rick astley official": 1,
+            "rickrolled": 1,
+            "Fortnite song": 1,
+            "Fortnite event": 1,
+            "Fortnite dance": 1,
+            "fortnite never gonna give you up": 1,
+            "rick roll": 1,
+            "rickrolling": 1,
+            "rick rolling": 1
+          },
+          "tag_count": [
+            27,
+            4,
+            0,
+            0
+          ],
+          "engagement_by_tag_count": {},
+          "successful_tag_combinations": [
+            {
+              "tags": [
+                "CSAA",
+                "Rick Astley",
+                "InsurAAAnce",
+                "RickRoll"
+              ],
+              "engagement_rate": 4.61,
+              "title": "InsurAAAnce & Rick Astley Never Gonna Give You Up"
+            },
+            {
+              "tags": [],
+              "engagement_rate": 3.68,
+              "title": "Never Gonna Give You Up - Rick Astley (Lyrics) \ud83c\udfb5"
+            }
+          ]
+        },
+        "duration_patterns": {
+          "duration_ranges": {
+            "short": {
+              "count": 4,
+              "avg_engagement": 2.34,
+              "videos": [
+                {
+                  "title": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)",
+                  "duration": 214,
+                  "engagement": 0
+                },
+                {
+                  "title": "InsurAAAnce & Rick Astley Never Gonna Give You Up",
+                  "duration": 65,
+                  "engagement": 4.61
+                },
+                {
+                  "title": "Never Gonna Give You Up - Rick Astley (Lyrics) \ud83c\udfb5",
+                  "duration": 12,
+                  "engagement": 3.68
+                },
+                {
+                  "title": "Rick Astley - Never Gonna Give You Up (Lyrics)",
+                  "duration": 228,
+                  "engagement": 1.07
+                }
+              ]
+            },
+            "medium": {
+              "count": 0,
+              "avg_engagement": 0,
+              "videos": []
+            },
+            "long": {
+              "count": 0,
+              "avg_engagement": 0,
+              "videos": []
+            }
+          },
+          "optimal_duration": "short"
+        },
+        "sponsorship_patterns": {
+          "sponsored_videos": [],
+          "non_sponsored_videos": [
+            {
+              "title": "InsurAAAnce & Rick Astley Never Gonna Give You Up",
+              "engagement": 4.61
+            },
+            {
+              "title": "Never Gonna Give You Up - Rick Astley (Lyrics) \ud83c\udfb5",
+              "engagement": 3.68
+            },
+            {
+              "title": "Rick Astley - Never Gonna Give You Up (Lyrics)",
+              "engagement": 1.07
+            }
+          ],
+          "sponsorship_impact": {
+            "sponsored_avg_engagement": 0,
+            "non_sponsored_avg_engagement": 3.12,
+            "engagement_difference": 0
+          },
+          "top_sponsors": {},
+          "sponsorship_timing": []
+        }
+      }
+    },
+    "recommendations": [
+      "\ud83d\udcc8 Focus on increasing engagement through community interaction and calls-to-action",
+      "\ud83c\udfaf Optimize title and thumbnail based on successful similar videos",
+      "\u23f0 Analyze posting timing of high-performing videos in your niche",
+      "\ud83c\udfb5 Consider creating lyrics or karaoke content which shows high engagement",
+      "\ud83c\udff7\ufe0f Use trending tags from successful similar videos"
+    ]
+  },
+  "agent_insights": {},
+  "missing_insights": [
+    "\ud83c\udfaf **Content Performance Predictions**: Predict how well a video will perform based on title, tags, and content",
+    "\ud83d\udcc8 **Trend Analysis**: Identify trending topics and content patterns over time",
+    "\ud83c\udfa8 **Thumbnail Analysis**: Analyze thumbnail effectiveness and suggest improvements",
+    "\u23f0 **Optimal Upload Timing**: Determine best times to upload based on audience behavior",
+    "\ud83c\udfb5 **Audio Analysis**: Analyze audio quality, music usage, and sound patterns",
+    "\ud83d\udc65 **Audience Demographics**: Estimate audience age, location, and interests",
+    "\ud83d\udd04 **Content Repurposing Suggestions**: Identify content that could be repurposed",
+    "\ud83d\udcca **Competitor Analysis**: Compare performance against specific competitors",
+    "\ud83c\udfac **Video Quality Metrics**: Analyze video resolution, frame rate, and quality",
+    "\ud83d\udca1 **Content Gap Analysis**: Identify underserved topics in your niche",
+    "\ud83d\udcf1 **Cross-Platform Performance**: Compare YouTube performance with other platforms",
+    "\ud83c\udfaf **A/B Testing Suggestions**: Suggest title/thumbnail variations to test",
+    "\ud83d\udcc8 **Growth Trajectory**: Predict channel growth based on current trends",
+    "\ud83c\udfa8 **Brand Safety Analysis**: Check for potential brand safety issues",
+    "\ud83d\udcca **Revenue Optimization**: Suggest monetization strategies based on content type"
+  ],
+  "recommendations": [
+    "Implement content performance prediction using ML models",
+    "Add thumbnail analysis using computer vision",
+    "Create trend analysis dashboard with historical data",
+    "Build audience demographics estimation",
+    "Add cross-platform performance comparison",
+    "Implement A/B testing framework for titles and thumbnails",
+    "Create content gap analysis tool",
+    "Add brand safety monitoring",
+    "Build revenue optimization suggestions",
+    "Implement growth trajectory predictions"
+  ]
+}

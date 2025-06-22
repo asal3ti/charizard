@@ -2,26 +2,30 @@
 Analytics Agent for YouTube Video Analysis
 """
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import pandas as pd
 from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from src.agents.base_agent import BaseAgent
 import importlib
 import src.services.youtube_service
+import src.services.enhanced_insights_service
 import concurrent.futures
 
 class AnalyticsAgent(BaseAgent):
     """Agent for analyzing YouTube video analytics and comments"""
     
-    def __init__(self, api_key: str, model_name: str = "gemma3:latest"):
+    def __init__(self, api_key: str, model_name: Optional[str] = None):
         super().__init__(model_name)
         
         # Force reload the module to ensure we get the latest version
         importlib.reload(src.services.youtube_service)
+        importlib.reload(src.services.enhanced_insights_service)
         from src.services.youtube_service import EnhancedYouTubeService
+        from src.services.enhanced_insights_service import EnhancedInsightsService
         
         self.youtube_service = EnhancedYouTubeService(api_key)
+        self.enhanced_insights = EnhancedInsightsService()
         self.vader_analyzer = SentimentIntensityAnalyzer()
         
         # Workaround: Add missing methods to youtube_service if they don't exist
@@ -114,8 +118,11 @@ class AnalyticsAgent(BaseAgent):
             vader_scores = self.vader_analyzer.polarity_scores(text)
             
             # TextBlob sentiment analysis
-            blob = TextBlob(text)
-            textblob_sentiment = blob.sentiment.polarity
+            try:
+                blob = TextBlob(text)
+                textblob_sentiment = float(blob.sentiment.polarity)
+            except:
+                textblob_sentiment = 0.0
             
             # AI sentiment analysis
             ai_sentiment = self.ai_service.analyze_sentiment(text)
@@ -164,7 +171,14 @@ class AnalyticsAgent(BaseAgent):
             return {"error": "No transcript found"}
         
         # Basic text analysis
-        blob = TextBlob(transcript)
+        try:
+            blob = TextBlob(transcript)
+            sentences = list(blob.sentences)
+            sentence_count = len(sentences)
+        except:
+            # Fallback to simple sentence counting
+            sentences = transcript.split('.')
+            sentence_count = len([s for s in sentences if s.strip()])
         
         # AI analysis of transcript
         ai_analysis = self.ai_service.generate_content(
@@ -177,10 +191,12 @@ class AnalyticsAgent(BaseAgent):
             "transcript analysis"
         )
         
+        word_count = len(transcript.split())
+        
         return {
-            "word_count": len(transcript.split()),
-            "sentence_count": len(blob.sentences),
-            "avg_sentence_length": len(transcript.split()) / len(blob.sentences) if blob.sentences else 0,
+            "word_count": word_count,
+            "sentence_count": sentence_count,
+            "avg_sentence_length": word_count / sentence_count if sentence_count > 0 else 0,
             "ai_analysis": ai_analysis,
             "transcript_preview": transcript[:500] + "..." if len(transcript) > 500 else transcript
         }
@@ -483,4 +499,219 @@ class AnalyticsAgent(BaseAgent):
             }
             
         except Exception as e:
-            return {"error": str(e)} 
+            return {"error": str(e)}
+
+    def get_enhanced_insights(self, video_id: str) -> Dict[str, Any]:
+        """Get enhanced insights using the new insights service"""
+        try:
+            # Get basic video data
+            video_info = self.youtube_service.get_video_info(video_id)
+            if not video_info:
+                return {"error": "Could not fetch video info"}
+            
+            # Get comments for analysis
+            comments = self.youtube_service.get_comments(video_id, max_results=100)
+            
+            # Generate enhanced insights
+            enhanced_results = {}
+            
+            # Content performance prediction
+            performance_analysis = self.enhanced_insights.analyze_content_performance_potential(video_info)
+            enhanced_results["performance_prediction"] = performance_analysis
+            
+            # Audience behavior patterns
+            if comments:
+                audience_analysis = self.enhanced_insights.analyze_audience_behavior_patterns(comments)
+                enhanced_results["audience_behavior"] = audience_analysis
+            
+            # Content optimization suggestions
+            optimization_suggestions = self.enhanced_insights.generate_content_optimization_suggestions(video_info, comments or [])
+            enhanced_results["optimization_suggestions"] = optimization_suggestions
+            
+            # AI-generated insights
+            ai_insights = self.ai_service.generate_insights({
+                "video_info": video_info,
+                "comments_count": len(comments) if comments else 0,
+                "performance_score": performance_analysis.get("performance_score", 0)
+            }, "comprehensive video analytics")
+            enhanced_results["ai_insights"] = ai_insights
+            
+            # Performance prediction
+            performance_prediction = self.ai_service.predict_performance(video_info)
+            enhanced_results["performance_prediction"]["ai_prediction"] = performance_prediction
+            
+            return enhanced_results
+            
+        except Exception as e:
+            return {"error": f"Enhanced insights generation failed: {str(e)}"}
+    
+    def get_content_gap_analysis(self, channel_id: str, niche_keywords: List[str]) -> Dict[str, Any]:
+        """Analyze content gaps in the niche"""
+        try:
+            # Get channel videos
+            channel_videos = self.youtube_service.get_channel_videos(channel_id, max_results=50)
+            
+            # Search for videos in the niche
+            niche_videos = []
+            for keyword in niche_keywords[:3]:  # Limit to top 3 keywords
+                search_results = self.youtube_service.search_videos_by_keywords(keyword, max_results=20)
+                niche_videos.extend(search_results)
+            
+            # Analyze gaps
+            channel_topics = set()
+            niche_topics = set()
+            
+            # Extract topics from channel videos
+            for video in channel_videos:
+                title = video.get('snippet', {}).get('title', '').lower()
+                description = video.get('snippet', {}).get('description', '').lower()
+                channel_topics.update(title.split() + description.split())
+            
+            # Extract topics from niche videos
+            for video in niche_videos:
+                title = video.get('snippet', {}).get('title', '').lower()
+                description = video.get('snippet', {}).get('description', '').lower()
+                niche_topics.update(title.split() + description.split())
+            
+            # Find gaps
+            content_gaps = niche_topics - channel_topics
+            
+            # Generate AI insights on gaps
+            gap_analysis = self.ai_service.generate_insights({
+                "channel_topics": list(channel_topics)[:20],
+                "niche_topics": list(niche_topics)[:20],
+                "content_gaps": list(content_gaps)[:20],
+                "channel_videos_count": len(channel_videos),
+                "niche_videos_count": len(niche_videos)
+            }, "content gap analysis")
+            
+            return {
+                "channel_topics": list(channel_topics)[:20],
+                "niche_topics": list(niche_topics)[:20],
+                "content_gaps": list(content_gaps)[:20],
+                "gap_analysis": gap_analysis,
+                "opportunity_score": len(content_gaps) / max(len(niche_topics), 1) * 100
+            }
+            
+        except Exception as e:
+            return {"error": f"Content gap analysis failed: {str(e)}"}
+    
+    def get_trend_analysis(self, keywords: List[str]) -> Dict[str, Any]:
+        """Analyze trends for given keywords"""
+        try:
+            trend_data = {}
+            
+            for keyword in keywords[:5]:  # Limit to 5 keywords
+                # Search for recent videos
+                recent_videos = self.youtube_service.search_videos_by_keywords(keyword, max_results=20)
+                
+                if recent_videos:
+                    # Analyze engagement patterns
+                    engagement_rates = []
+                    view_counts = []
+                    
+                    for video in recent_videos:
+                        video_id = video.get('id', {}).get('videoId')
+                        if video_id:
+                            video_info = self.youtube_service.get_video_info(video_id)
+                            if video_info:
+                                views = video_info.get('view_count', 0)
+                                likes = video_info.get('like_count', 0)
+                                comments = video_info.get('comment_count', 0)
+                                
+                                if views > 0:
+                                    engagement_rate = ((likes + comments) / views) * 100
+                                    engagement_rates.append(engagement_rate)
+                                    view_counts.append(views)
+                    
+                    if engagement_rates:
+                        trend_data[keyword] = {
+                            "avg_engagement_rate": sum(engagement_rates) / len(engagement_rates),
+                            "avg_views": sum(view_counts) / len(view_counts),
+                            "video_count": len(recent_videos),
+                            "trend_strength": "High" if sum(engagement_rates) / len(engagement_rates) > 3 else "Medium"
+                        }
+            
+            # Generate AI insights on trends
+            trend_insights = self.ai_service.generate_insights(trend_data, "trend analysis")
+            
+            return {
+                "trend_data": trend_data,
+                "trend_insights": trend_insights,
+                "top_trending_keywords": sorted(trend_data.items(), key=lambda x: x[1].get('avg_engagement_rate', 0), reverse=True)[:3]
+            }
+            
+        except Exception as e:
+            return {"error": f"Trend analysis failed: {str(e)}"}
+    
+    def get_competitor_analysis(self, channel_id: str, competitor_channels: List[str]) -> Dict[str, Any]:
+        """Analyze performance against competitors"""
+        try:
+            competitor_data = {}
+            
+            # Analyze main channel
+            main_channel = self.get_channel_analytics(channel_id)
+            if "error" not in main_channel:
+                competitor_data["main_channel"] = {
+                    "engagement_rate": main_channel.get("metrics", {}).get("channel_engagement_rate", 0),
+                    "avg_views": main_channel.get("metrics", {}).get("avg_views_per_video", 0),
+                    "subscriber_count": main_channel.get("statistics", {}).get("subscriber_count", 0)
+                }
+            
+            # Analyze competitors
+            for comp_channel_id in competitor_channels[:5]:  # Limit to 5 competitors
+                comp_channel = self.get_channel_analytics(comp_channel_id)
+                if "error" not in comp_channel:
+                    competitor_data[comp_channel_id] = {
+                        "engagement_rate": comp_channel.get("metrics", {}).get("channel_engagement_rate", 0),
+                        "avg_views": comp_channel.get("metrics", {}).get("avg_views_per_video", 0),
+                        "subscriber_count": comp_channel.get("statistics", {}).get("subscriber_count", 0)
+                    }
+            
+            # Generate competitive insights
+            competitive_insights = self.ai_service.generate_insights(competitor_data, "competitive analysis")
+            
+            return {
+                "competitor_data": competitor_data,
+                "competitive_insights": competitive_insights,
+                "market_position": self._calculate_market_position(competitor_data)
+            }
+            
+        except Exception as e:
+            return {"error": f"Competitor analysis failed: {str(e)}"}
+    
+    def _calculate_market_position(self, competitor_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate market position based on competitor data"""
+        if not competitor_data or "main_channel" not in competitor_data:
+            return {"position": "Unknown", "strengths": [], "weaknesses": []}
+        
+        main_channel = competitor_data["main_channel"]
+        competitors = [data for key, data in competitor_data.items() if key != "main_channel"]
+        
+        if not competitors:
+            return {"position": "No competitors analyzed", "strengths": [], "weaknesses": []}
+        
+        # Calculate rankings
+        engagement_ranking = sorted(competitors, key=lambda x: x.get("engagement_rate", 0), reverse=True)
+        views_ranking = sorted(competitors, key=lambda x: x.get("avg_views", 0), reverse=True)
+        
+        # Find main channel position
+        engagement_position = 1
+        for comp in engagement_ranking:
+            if comp.get("engagement_rate", 0) > main_channel.get("engagement_rate", 0):
+                engagement_position += 1
+        
+        views_position = 1
+        for comp in views_ranking:
+            if comp.get("avg_views", 0) > main_channel.get("avg_views", 0):
+                views_position += 1
+        
+        total_competitors = len(competitors)
+        
+        return {
+            "engagement_rank": f"{engagement_position}/{total_competitors + 1}",
+            "views_rank": f"{views_position}/{total_competitors + 1}",
+            "overall_position": "Leader" if engagement_position <= 2 and views_position <= 2 else "Challenger" if engagement_position <= total_competitors // 2 else "Follower",
+            "strengths": ["High engagement"] if engagement_position <= 2 else [],
+            "weaknesses": ["Low views"] if views_position > total_competitors // 2 else []
+        } 

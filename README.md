@@ -1,6 +1,6 @@
 # YouTube Analytics AI System
 
-A comprehensive AI-powered YouTube analytics backend API that uses multiple AI agents to analyze YouTube videos, extract insights, and generate content. Built with Flask, LangChain, and Ollama for local LLM processing using the Gemma3 model.
+A comprehensive AI-powered YouTube analytics backend API that uses multiple AI agents to analyze YouTube videos, extract insights, and generate content. Built with Flask, LangChain, and OpenAI for production-ready AI processing.
 
 ## Features
 
@@ -17,6 +17,25 @@ A comprehensive AI-powered YouTube analytics backend API that uses multiple AI a
 - Video transcript analysis and topic extraction
 - Channel-level analytics
 - Multi-video comparison
+
+### 🎯 Enhanced Comment Analysis (NEW!)
+- **Advanced Sentiment Analysis**: VADER sentiment analysis with sarcasm detection
+- **Language Detection**: Automatic English comment filtering
+- **Tagged Insights**: 5-category insights (High Impact, Medium Impact, Content, Sponsorship, Comment Sentiment)
+- **Community Health Assessment**: Overall community sentiment and engagement quality
+- **Content Performance Metrics**: Engagement rates, comment ratios, and performance scoring
+- **Priority Recommendations**: Actionable insights ranked by impact
+- **Benchmark Comparisons**: Industry standard comparisons for engagement and sentiment
+- **Enhanced Metrics**: Sentiment scores, community health scores, and performance assessments
+
+### 🎯 Enhanced Insights (NEW!)
+- **Content Performance Prediction**: Predict how well a video will perform
+- **Audience Behavior Analysis**: Identify influencers, engagement patterns, topic clusters
+- **Content Optimization Suggestions**: Title, thumbnail, tag, and SEO improvements
+- **Content Gap Analysis**: Find underserved topics in your niche
+- **Trend Analysis**: Identify trending topics and content patterns
+- **Competitor Analysis**: Compare performance against competitors
+- **Market Position Analysis**: Understand your competitive position
 
 ### 🎨 Content Generation
 - AI-generated social media posts for multiple platforms
@@ -35,9 +54,9 @@ A comprehensive AI-powered YouTube analytics backend API that uses multiple AI a
 ## Prerequisites
 
 - Python 3.8+
-- Ollama installed and running locally
+- OpenAI API key (for production)
 - YouTube Data API v3 key
-- macOS (for Ollama compatibility)
+- Optional: Ollama for local development
 
 ## Installation
 
@@ -58,21 +77,7 @@ A comprehensive AI-powered YouTube analytics backend API that uses multiple AI a
    pip install -r requirements.txt
    ```
 
-4. **Install Ollama**
-   ```bash
-   # On macOS
-   curl -fsSL https://ollama.ai/install.sh | sh
-   
-   # Start Ollama
-   ollama serve
-   ```
-
-5. **Download Gemma3 model**
-   ```bash
-   ollama pull gemma3
-   ```
-
-6. **Set up environment variables**
+4. **Set up environment variables**
    ```bash
    cp env.example .env
    # Edit .env with your API keys
@@ -86,28 +91,40 @@ Create a `.env` file with the following variables:
 # YouTube API Configuration
 YOUTUBE_API_KEY=your_youtube_api_key_here
 
-# Ollama Configuration
+# OpenAI Configuration (Primary for production)
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o-mini
+
+# Ollama Configuration (Fallback for development)
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=gemma3
 
 # Flask Configuration
 PORT=5000
-FLASK_ENV=development
-FLASK_DEBUG=True
+FLASK_ENV=production
+FLASK_DEBUG=False
 
 # Logging Configuration
 LOG_LEVEL=INFO
 
-# Optional: OpenAI API Key (for DALL-E image generation)
-OPENAI_API_KEY=your_openai_api_key_here
+# Database Configuration (if needed)
+DATABASE_URL=sqlite:///analytics.db
 ```
 
-### Getting YouTube API Key
+### Getting API Keys
 
+#### YouTube API Key
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing one
 3. Enable YouTube Data API v3
 4. Create credentials (API Key)
+5. Add the API key to your `.env` file
+
+#### OpenAI API Key
+1. Go to [OpenAI Platform](https://platform.openai.com/)
+2. Create an account or sign in
+3. Navigate to API Keys section
+4. Create a new API key
 5. Add the API key to your `.env` file
 
 ## Usage
@@ -118,162 +135,133 @@ OPENAI_API_KEY=your_openai_api_key_here
 python src/app.py
 ```
 
-The server will start on `http://localhost:5000`
+The server will start on `http://localhost:8000`
 
 ### API Endpoints
 
 #### Health Check
 ```bash
-GET /api/health
+GET /health
 ```
 
-#### Full Video Analysis
+#### Enhanced Video Analysis (NEW!)
 ```bash
 POST /api/analyze
 Content-Type: application/json
 
 {
-  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  "generate_content": true,
-  "critique_results": true
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 }
 ```
 
-#### Get Analytics Only
+**Response includes:**
+- Video metadata (title, channel, views, likes, comments)
+- Sentiment analysis with sarcasm detection
+- Tagged insights (5 categories with actionable recommendations)
+- Additional metrics (engagement rate, sentiment score, community health)
+- Priority recommendations ranked by impact
+- Benchmark comparisons against industry standards
+
+#### Video ID Extraction
+```bash
+POST /api/extract-video-id
+Content-Type: application/json
+
+{
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+```
+
+#### Routes Listing
+```bash
+GET /routes
+```
+
+#### Basic Analytics
 ```bash
 POST /api/analytics
 Content-Type: application/json
 
 {
-  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  "video_id": "dQw4w9WgXcQ"
 }
 ```
 
-#### Get Comments Analysis
+#### Enhanced Insights (NEW!)
+```bash
+POST /api/video/enhanced-insights
+Content-Type: application/json
+
+{
+  "video_id": "dQw4w9WgXcQ"
+}
+```
+
+#### Content Gap Analysis
+```bash
+POST /api/content-gap-analysis
+Content-Type: application/json
+
+{
+  "channel_id": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+  "niche_keywords": ["python", "programming", "tutorial"]
+}
+```
+
+#### Trend Analysis
+```bash
+POST /api/trend-analysis
+Content-Type: application/json
+
+{
+  "keywords": ["artificial intelligence", "machine learning", "AI"]
+}
+```
+
+#### Competitor Analysis
+```bash
+POST /api/competitor-analysis
+Content-Type: application/json
+
+{
+  "channel_id": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+  "competitor_channels": ["UC8butISFwT-Wl7EV0hUK0BQ", "UCWv7vMbMWH4-V0ZXdmDpPBA"]
+}
+```
+
+#### Comprehensive Insights Summary
+```bash
+POST /api/insights/summary
+Content-Type: application/json
+
+{
+  "video_id": "dQw4w9WgXcQ"
+}
+```
+
+#### Comments Analysis
 ```bash
 POST /api/comments
 Content-Type: application/json
 
 {
-  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  "max_results": 500
+  "video_id": "dQw4w9WgXcQ"
 }
 ```
 
-#### Get Video Transcript
+#### Channel Analytics
 ```bash
-POST /api/transcript
+GET /api/channel/{channel_id}
+```
+
+#### Technical Insights
+```bash
+POST /api/video/technical-insights
 Content-Type: application/json
 
 {
-  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-}
-```
-
-#### Analyze Channel
-```bash
-POST /api/channel
-Content-Type: application/json
-
-{
-  "channel_id": "UC_x5XG1OV2P6uZZ5FSM9Ttw"
-}
-```
-
-#### Compare Multiple Videos
-```bash
-POST /api/compare
-Content-Type: application/json
-
-{
-  "video_urls": [
-    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "https://www.youtube.com/watch?v=9bZkp7q19f0"
-  ]
-}
-```
-
-#### Workflow Status
-```bash
-GET /api/workflow/status/{workflow_id}
-GET /api/workflow/current
-GET /api/workflow/history
-```
-
-#### Agent Capabilities
-```bash
-GET /api/agents/capabilities
-```
-
-## Example Responses
-
-### Full Analysis Response
-```json
-{
-  "workflow_id": "workflow_20231201_143022_dQw4w9WgXcQ",
   "video_id": "dQw4w9WgXcQ",
-  "start_time": "2023-12-01T14:30:22",
-  "steps": [
-    {
-      "step": "analytics",
-      "status": "completed",
-      "result": {
-        "video_id": "dQw4w9WgXcQ",
-        "analytics": {
-          "performance_metrics": {
-            "engagement_rate": 0.045,
-            "sentiment_score": 0.72,
-            "comment_quality_score": 0.85
-          },
-          "insights": {
-            "top_topics": ["music", "entertainment", "viral"],
-            "audience_reaction": "Very positive",
-            "content_strengths": ["catchy", "memorable"],
-            "improvement_areas": ["length", "repetition"]
-          },
-          "recommendations": [
-            "Consider shorter format for better retention",
-            "Add more variety in content"
-          ]
-        },
-        "visualizations": {
-          "sentiment_distribution": "base64_chart_data",
-          "comment_categories": "base64_chart_data"
-        }
-      }
-    },
-    {
-      "step": "content_generation",
-      "status": "completed",
-      "result": {
-        "engagement_post": {
-          "base_content": {
-            "title": "Viral Success Analysis",
-            "content": "This video achieved incredible engagement...",
-            "hashtags": ["#YouTube", "#Viral", "#Analytics"],
-            "call_to_action": "Check out the full analysis!"
-          },
-          "platform_variations": {
-            "twitter": {
-              "content": "Shortened version for Twitter...",
-              "hashtags": ["#YouTube", "#Viral"]
-            }
-          }
-        },
-        "images": {
-          "engagement_post_image": "base64_image_data"
-        }
-      }
-    }
-  ],
-  "end_time": "2023-12-01T14:32:15",
-  "status": "completed",
-  "summary": {
-    "total_steps": 4,
-    "completed_steps": 4,
-    "key_insights": ["music", "entertainment", "viral"],
-    "recommendations": ["Consider shorter format", "Add more variety"]
-  }
+  "max_results": 5
 }
 ```
 
@@ -281,132 +269,3 @@ GET /api/agents/capabilities
 
 ### Agent System
 ```
-OrchestratorAgent
-├── AnalyticsAgent
-│   ├── Video Analysis
-│   ├── Comment Analysis
-│   └── Transcript Analysis
-├── CritiqueAgent
-│   ├── Quality Assurance
-│   ├── ReAct Methodology
-│   └── Output Improvement
-└── ContentAgent
-    ├── Social Media Posts
-    ├── Image Generation
-    └── Platform Optimization
-```
-
-### Data Flow
-1. **Input**: YouTube URL or Video ID
-2. **Orchestrator**: Coordinates workflow
-3. **Analytics**: Extracts video data, comments, transcript
-4. **Critique**: Reviews and improves analytics
-5. **Content**: Generates social media content
-6. **Critique**: Reviews and improves content
-7. **Output**: Comprehensive analysis with generated content
-
-## Development
-
-### Project Structure
-```
-charizard/
-├── src/
-│   ├── agents/
-│   │   ├── __init__.py
-│   │   ├── base_agent.py
-│   │   ├── analytics_agent.py
-│   │   ├── critique_agent.py
-│   │   ├── content_agent.py
-│   │   └── orchestrator_agent.py
-│   ├── services/
-│   │   ├── __init__.py
-│   │   └── youtube_service.py
-│   ├── app.py
-│   └── main.py
-├── requirements.txt
-├── env.example
-└── README.md
-```
-
-### Adding New Agents
-
-1. Create new agent class inheriting from `BaseAgent`
-2. Implement required methods: `process()`, `get_capabilities()`
-3. Add to orchestrator agent
-4. Update API endpoints if needed
-
-### Customizing LLM
-
-The system uses Ollama with Gemma3 for local LLM processing. You can:
-
-1. Change the model in `.env`:
-   ```env
-   OLLAMA_MODEL=gemma3
-   ```
-
-2. Download different models:
-   ```bash
-   ollama pull gemma3
-   ollama pull llama2
-   ollama pull mistral
-   ollama pull codellama
-   ```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Ollama not running**
-   ```bash
-   ollama serve
-   ```
-
-2. **Gemma3 model not found**
-   ```bash
-   ollama pull gemma3
-   ```
-
-3. **YouTube API quota exceeded**
-   - Check your quota in Google Cloud Console
-   - Consider implementing caching
-
-4. **Comments disabled**
-   - Some videos have comments disabled
-   - Check video settings
-
-### Logs
-
-Check logs for detailed error information:
-```bash
-tail -f logs/app.log
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For support and questions:
-- Create an issue in the repository
-- Check the troubleshooting section
-- Review the API documentation
-
-## Roadmap
-
-- [ ] Real-time analytics dashboard
-- [ ] Advanced image generation with DALL-E
-- [ ] Multi-language support
-- [ ] Batch processing for multiple videos
-- [ ] Export functionality (PDF, CSV)
-- [ ] Webhook notifications
-- [ ] Rate limiting and caching
-- [ ] Docker containerization
