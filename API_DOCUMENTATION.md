@@ -113,6 +113,82 @@ Compares a video with similar videos based on keywords/tags, excluding videos fr
       ["nordvpn", 2],
       ["skillshare", 1]
     ]
+  },
+  "technical_insights": {
+    "original_video_analysis": {
+      "engagement_rate": 1.1,
+      "like_ratio": 1.0,
+      "comment_ratio": 0.1,
+      "total_engagement": 20826506,
+      "engagement_per_view": 0.0125
+    },
+    "similar_videos_analysis": {
+      "average_metrics": {
+        "engagement_rate": 3.06,
+        "like_ratio": 2.8,
+        "comment_ratio": 0.26
+      },
+      "top_performers": {
+        "highest_engagement": {
+          "title": "Top Performing Video",
+          "engagement_rate": 4.61,
+          "channel": "Top Channel",
+          "views": 8308800
+        }
+      },
+      "content_patterns": {
+        "title_patterns": {
+          "has_emojis": 2,
+          "has_numbers": 1,
+          "has_brackets": 3
+        },
+        "tag_patterns": {
+          "most_common_tags": {
+            "rick astley": 3,
+            "never gonna give you up": 2
+          }
+        },
+        "duration_patterns": {
+          "optimal_duration": "short"
+        }
+      }
+    },
+    "success_patterns": {
+      "high_engagement_indicators": [
+        "High comment-to-like ratio indicates strong community engagement"
+      ],
+      "content_strategies": [
+        "Lyrics/karaoke content performs well",
+        "Official/original content gets higher engagement"
+      ]
+    },
+    "engagement_strategies": {
+      "title_optimization": [
+        "Bracketed titles help with discoverability",
+        "Emojis in titles increase click-through rates"
+      ],
+      "content_approaches": [
+        "Lyrics content drives high engagement",
+        "Official content builds trust"
+      ]
+    },
+    "content_insights": {
+      "performance_comparison": {
+        "original_engagement_rate": 1.1,
+        "average_similar_engagement": 3.06,
+        "performance_percentile": 25,
+        "relative_performance": "below_average"
+      },
+      "optimization_opportunities": [
+        "Consider adding more engaging elements to increase interaction",
+        "Review title and thumbnail optimization based on successful similar videos"
+      ]
+    },
+    "recommendations": [
+      "📈 Focus on increasing engagement through community interaction and calls-to-action",
+      "🎯 Optimize title and thumbnail based on successful similar videos",
+      "🎵 Consider creating lyrics or karaoke content which shows high engagement"
+    ]
   }
 }
 ```
@@ -123,32 +199,219 @@ Compares a video with similar videos based on keywords/tags, excluding videos fr
 - ✅ **Sponsorship Analysis**: Analyzes each similar video for sponsorship content
 - ✅ **Engagement Metrics**: Calculates engagement rates and performance metrics
 - ✅ **Transcript Analysis**: Analyzes video transcripts for sponsorship detection
+- ✅ **Technical Insights**: Comprehensive analysis of success patterns and engagement strategies
 
-### 5. Video Sponsorship Analysis
+### 5. Technical Insights Analysis
+**POST** `/api/video/technical-insights`
+Get detailed technical insights and success patterns for a video, including engagement strategies and optimization recommendations.
+
+**Request Body:**
+```json
+{
+  "video_id": "dQw4w9WgXcQ",
+  "max_results": 5
+}
+```
+
+**Response:**
+```json
+{
+  "video_id": "dQw4w9WgXcQ",
+  "technical_insights": {
+    "original_video_analysis": {
+      "engagement_rate": 1.1,
+      "like_ratio": 1.0,
+      "comment_ratio": 0.1,
+      "total_engagement": 20826506,
+      "engagement_per_view": 0.0125
+    },
+    "similar_videos_analysis": {
+      "average_metrics": {
+        "engagement_rate": 3.06,
+        "like_ratio": 2.8,
+        "comment_ratio": 0.26
+      },
+      "top_performers": {
+        "highest_engagement": {
+          "title": "Top Performing Video",
+          "engagement_rate": 4.61,
+          "channel": "Top Channel",
+          "views": 8308800
+        },
+        "most_likes": {
+          "title": "Most Liked Video",
+          "likes": 368938,
+          "channel": "Popular Channel",
+          "views": 8308800
+        },
+        "most_comments": {
+          "title": "Most Commented Video",
+          "comments": 2554,
+          "channel": "Engaged Channel",
+          "views": 1558307
+        }
+      },
+      "content_patterns": {
+        "title_patterns": {
+          "common_keywords": {
+            "rick": 3,
+            "astley": 3,
+            "never": 2,
+            "gonna": 2
+          },
+          "has_emojis": 2,
+          "has_numbers": 1,
+          "has_brackets": 3
+        },
+        "tag_patterns": {
+          "most_common_tags": {
+            "rick astley": 3,
+            "never gonna give you up": 2,
+            "nggyu": 1
+          },
+          "successful_tag_combinations": [
+            {
+              "tags": ["rick astley", "never gonna give you up"],
+              "engagement_rate": 4.61,
+              "title": "Successful Video Title"
+            }
+          ]
+        },
+        "duration_patterns": {
+          "duration_ranges": {
+            "short": {
+              "count": 2,
+              "avg_engagement": 4.15,
+              "videos": []
+            },
+            "medium": {
+              "count": 1,
+              "avg_engagement": 1.07,
+              "videos": []
+            }
+          },
+          "optimal_duration": "short"
+        },
+        "sponsorship_patterns": {
+          "sponsored_videos": [],
+          "non_sponsored_videos": [
+            {
+              "title": "Non-sponsored Video",
+              "engagement": 4.61
+            }
+          ],
+          "sponsorship_impact": {
+            "sponsored_avg_engagement": 0,
+            "non_sponsored_avg_engagement": 3.06,
+            "engagement_difference": 0
+          }
+        }
+      }
+    },
+    "success_patterns": {
+      "high_engagement_indicators": [
+        "High comment-to-like ratio indicates strong community engagement"
+      ],
+      "content_strategies": [
+        "Lyrics/karaoke content performs well",
+        "Official/original content gets higher engagement"
+      ],
+      "audience_behavior": [
+        "Smaller channels often have higher engagement rates"
+      ]
+    },
+    "engagement_strategies": {
+      "title_optimization": [
+        "Bracketed titles help with discoverability",
+        "Emojis in titles increase click-through rates"
+      ],
+      "content_approaches": [
+        "Lyrics content drives high engagement",
+        "Official content builds trust"
+      ],
+      "community_engagement": [
+        "High comment ratios indicate strong community interaction"
+      ]
+    },
+    "content_insights": {
+      "performance_comparison": {
+        "original_engagement_rate": 1.1,
+        "average_similar_engagement": 3.06,
+        "performance_percentile": 25,
+        "relative_performance": "below_average"
+      },
+      "optimization_opportunities": [
+        "Consider adding more engaging elements to increase interaction",
+        "Review title and thumbnail optimization based on successful similar videos"
+      ],
+      "content_gaps": [
+        "Consider adding these trending tags: lyrics, karaoke, official"
+      ],
+      "trending_elements": [
+        "Trending keywords in successful videos: rick, astley, never, gonna"
+      ]
+    },
+    "recommendations": [
+      "📈 Focus on increasing engagement through community interaction and calls-to-action",
+      "🎯 Optimize title and thumbnail based on successful similar videos",
+      "🎵 Consider creating lyrics or karaoke content which shows high engagement",
+      "🏷️ Use trending tags from successful similar videos",
+      "💬 Encourage comments by asking questions or creating discussion points"
+    ]
+  },
+  "summary": {
+    "original_performance": {
+      "engagement_rate": 1.1,
+      "like_ratio": 1.0,
+      "comment_ratio": 0.1
+    },
+    "comparison_metrics": {
+      "engagement_rate": 3.06,
+      "like_ratio": 2.8,
+      "comment_ratio": 0.26
+    },
+    "top_recommendations": [
+      "📈 Focus on increasing engagement through community interaction and calls-to-action",
+      "🎯 Optimize title and thumbnail based on successful similar videos",
+      "🎵 Consider creating lyrics or karaoke content which shows high engagement"
+    ]
+  }
+}
+```
+
+**Features:**
+- ✅ **Performance Analysis**: Detailed comparison of your video vs similar videos
+- ✅ **Success Pattern Identification**: What makes videos successful in your niche
+- ✅ **Engagement Strategy Analysis**: How top performers engage their audience
+- ✅ **Content Optimization Insights**: Specific recommendations for improvement
+- ✅ **Trending Element Detection**: What's working in your content category
+- ✅ **Actionable Recommendations**: Specific steps to improve performance
+
+### 6. Video Sponsorship Analysis
 **POST** `/api/sponsorship`
 Analyzes a specific video for sponsorship content and patterns.
 
-### 6. Sponsored Video Search
+### 7. Sponsored Video Search
 **POST** `/api/search-sponsored`
 Searches for videos with specific keywords and analyzes their sponsorship patterns.
 
-### 7. Channel Analytics
+### 8. Channel Analytics
 **POST** `/api/channel`
 Analyzes a YouTube channel's performance and metrics.
 
-### 8. Channel Comparison
+### 9. Channel Comparison
 **POST** `/api/compare-channels`
 Compares multiple YouTube channels.
 
-### 9. Channel Metrics
+### 10. Channel Metrics
 **GET** `/api/channel-metrics`
 Gets aggregated channel performance metrics.
 
-### 10. Analysis History
+### 11. Analysis History
 **GET** `/api/history`
 Retrieves analysis history and previous results.
 
-### 11. Task Management
+### 12. Task Management
 **POST** `/api/analyze`
 Creates background tasks for comprehensive analysis.
 
